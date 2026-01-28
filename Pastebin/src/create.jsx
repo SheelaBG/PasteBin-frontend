@@ -16,13 +16,13 @@ export default function Create() {
         max_views: views || undefined,
       });
 
+      console.log(res);
+      
       setUrl(res.data.url);
     } catch (error) {
       console.error("Error submitting data:", error);
     }
   }
-
-  console.log(window.location.origin);
 
   return (
     <div>
