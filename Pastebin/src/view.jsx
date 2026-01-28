@@ -1,22 +1,78 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
-export default function View() {
+export default function ViewPaste() {
   const { id } = useParams();
-  const [data, setData] = useState(null);
+  const [paste, setPaste] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const fetchedRef = useRef(false);
+
   useEffect(() => {
-    axios.get(`http://localhost:8080/paste/view/${id}`)
-      .then(response => {
-        setData(response.data); 
-      })
-      .catch(() => setError(true));
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+
+    const fetchPaste = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8080/api/pastes/${id}`);
+        setPaste(res.data);
+      } catch (err) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPaste();
   }, [id]);
 
-  if (error) return <h2>Not found</h2>;
-  if (!data) return <p>Loading...</p>;
+  if (loading) return <p>Loading paste...</p>;
+  if (error || !paste) return <h2>Paste not found</h2>;
 
-  return <div dangerouslySetInnerHTML={{ __html: data }} />;
+  return (
+    <div
+      style={{
+        maxWidth: "800px",
+        margin: "2rem auto",
+        padding: "1rem",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <h2 style={{ marginBottom: "1rem" }}>Paste</h2>
+
+      <pre
+        style={{
+          backgroundColor: "#1e1e1e",
+          color: "#f5f5f5",
+          padding: "1rem",
+          borderRadius: "6px",
+          border: "1px solid #333",
+          whiteSpace: "pre-wrap",
+          wordBreak: "break-word",
+          overflowX: "auto",
+          fontFamily: "monospace",
+          fontSize: "0.95rem",
+        }}
+      >
+        {paste.content}
+      </pre>
+
+      <div style={{ marginTop: "1rem", color: "#555", fontSize: "0.9rem" }}>
+        {paste.remaining_views !== null && (
+          <p>
+            <strong>Remaining Views:</strong> {paste.remaining_views}
+          </p>
+        )}
+
+        {paste.expires_at && (
+          <p>
+            <strong>Expires At:</strong>{" "}
+            {new Date(paste.expires_at).toLocaleString()}
+          </p>
+        )}
+      </div>
+    </div>
+  );
 }
