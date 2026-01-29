@@ -4,7 +4,14 @@ import { Input, Button, notification, Space, Row, Col } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 // Reusable Input Component
-const InputField = ({ label, value, onChange, type = "text", placeholder, min }) => (
+const InputField = ({
+  label,
+  value,
+  onChange,
+  type = "text",
+  placeholder,
+  min,
+}) => (
   <div>
     <label className="ant-form-item-label">{label}</label>
     <Input
@@ -54,11 +61,6 @@ export default function Create() {
   const [error, setError] = useState("");
 
   const submit = async () => {
-    if (!content.trim()) {
-      setError("Content cannot be empty");
-      return;
-    }
-
     setError("");
     setLoading(true);
 
@@ -70,7 +72,7 @@ export default function Create() {
           ttl_seconds: ttl || undefined,
           max_views: views || undefined,
         },
-        { headers: { "Content-Type": "application/json" } }
+        { headers: { "Content-Type": "application/json" } },
       );
 
       setUrl(res.data.url);
@@ -80,7 +82,8 @@ export default function Create() {
 
       notification.success({
         message: "Paste Created Successfully",
-        description: "Your paste has been created successfully. You can view it below.",
+        description:
+          "Your paste has been created successfully. You can view it below.",
       });
     } catch (err) {
       setError("Failed to create paste. Please try again.");
@@ -97,7 +100,9 @@ export default function Create() {
     <main className="flex justify-center items-center bg-gray-50 px-4 min-h-screen">
       <section className="bg-white shadow-sm p-6 border rounded-xl w-full max-w-3xl">
         <header className="mb-6 text-center">
-          <h1 className="font-semibold text-gray-800 text-2xl">Create a Paste</h1>
+          <h1 className="font-semibold text-gray-800 text-2xl">
+            Create a Paste
+          </h1>
           <p className="mt-1 text-gray-500 text-sm">
             Share text securely with optional expiry and view limits
           </p>
@@ -144,7 +149,9 @@ export default function Create() {
         {/* Paste URL */}
         {url && (
           <div className="bg-gray-50 mt-6 p-4 border rounded-lg">
-            <p className="mb-1 text-gray-600 text-sm">Paste created successfully</p>
+            <p className="mb-1 text-gray-600 text-sm">
+              Paste created successfully
+            </p>
             <a
               href={url}
               target="_blank"
