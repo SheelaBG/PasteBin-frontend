@@ -11,12 +11,14 @@ export default function ViewPaste() {
   const fetchedRef = useRef(false);
 
   useEffect(() => {
+    const BASE_URL = import.meta.env.VITE_PASTE_BIN_BASE_URL;
+
     if (fetchedRef.current) return;
     fetchedRef.current = true;
 
     const fetchPaste = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/pastes/${id}`);
+        const res = await axios.get(`${BASE_URL}/api/pastes/${id}`);
         setPaste(res.data);
       } catch (err) {
         setError(true);

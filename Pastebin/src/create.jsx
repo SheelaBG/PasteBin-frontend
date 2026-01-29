@@ -61,12 +61,13 @@ export default function Create() {
   const [error, setError] = useState("");
 
   const submit = async () => {
+    const BASE_URL = import.meta.env.VITE_PASTE_BIN_BASE_URL;
     setError("");
     setLoading(true);
 
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/pastes",
+        `${BASE_URL}/api/pastes`,
         {
           content,
           ttl_seconds: ttl || undefined,
