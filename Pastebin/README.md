@@ -1,17 +1,15 @@
-## Pastebin Lite
+# Pastebin – Frontend
 
-A simple Pastebin-like application.
+React frontend for Pastebin .
 
-### Tech Stack
+## Tech Stack
 - React
-- Spring Boot
-- Mysql
+- Vite
+- Ant Design
 
-### Run Locally
-1. Start Mysql
-2. Run Spring Boot backend
-3. Run React frontend
+## Run Locally
 
-### Persistence
-Uses Mysql to persist pastes across requests.
-
+```bash
+cd frontend
+npm install
+npm run dev
